@@ -1,0 +1,61 @@
+@font-face {
+  font-family: "Amiga Forever Pro 2";
+  src: url("Amiga Forever Pro 2.woff2");
+}
+html, .level { height: 100%; }
+body {
+  margin: 0;
+  width: 640px;
+  height: 360px;
+  background-color: #121212;
+  font-family: "Amiga Forever Pro 2";
+  transform-origin: top left;
+}
+button {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+}
+.hidden { visibility: hidden; }
+
+.level {
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  image-rendering: pixelated;
+  user-select: none;
+}
+
+#main-menu { background-image: url("img/Sfondo Menù Principale.png"); }
+#logo {
+  position: absolute;
+  left: 298.6px;
+  top: 19.95px;
+  width: 310.8px;
+}
+@keyframes splash {
+  to { transform: rotate(-30deg) scale(0.35); }
+}
+#version {
+  position: absolute;
+  left: 363px;
+  top: 13px;
+  width: 256px;
+  transform-origin: center;
+  transform: rotate(-30deg) scale(0.45);
+  animation: splash 0.25s cubic-bezier(0, 0, 0.3633802276324187, 1) infinite alternate;
+}
+button, span {
+  position: absolute;
+  left: 20px;
+  font-size: 12px;
+  padding: 10px;
+}
+#play, #inc { top: 105px; }
+#delete, #dec { top: 165px; }
+#show-settings, #back { top: 225px; }
+#volume-label, #volume { top: 135px; }
+#volume, #inc, #dec {
+  left: 135px;
+  transform: translateX(-50%);
+}

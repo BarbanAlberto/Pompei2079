@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <title>Pompei 2079</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="level" id="main-menu">
+      <div id="main">
+        <img src="img/Logo.png" id="logo" alt="Pompei 2079">
+        <img src="img/Versione.png" id="version" alt="1.0">
+        <button id="play">Nuova partita</button>
+        <button id="delete">Elimina partita</button>
+        <button id="show-settings">Impostazioni</button>
+      </div>
+      <div id="settings" class="hidden">
+        <span id="volume-label">Volume:</span>
+        <span id="volume"></span>
+        <button id="inc">+</button>
+        <button id="dec">-</button>
+        <button id="back">Indietro</button>
+      </div>
+    </div>
+    <script src="js/AssertionUtils.js"></script>
+    <script src="js/GameScaler.js"></script>
+    <script src="js/SoundManager.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
