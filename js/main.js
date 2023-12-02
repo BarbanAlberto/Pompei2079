@@ -24,4 +24,4 @@
   assertNotNull(document.getElementById("volume"))
 );
 
-SoundManager.play();
+SoundManager.play("main");
