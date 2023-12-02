@@ -25,6 +25,7 @@ button {
   image-rendering: pixelated;
   user-select: none;
 }
+.unloaded { display: none; }
 
 #main-menu { background-image: url("img/Sfondo Menù Principale.png"); }
 #logo {
@@ -43,7 +44,7 @@ button {
   width: 256px;
   transform-origin: center;
   transform: rotate(-30deg) scale(0.45);
-  animation: splash 0.25s cubic-bezier(0, 0, 0.3633802276324187, 1) infinite alternate;
+  animation: splash 0.25s cubic-bezier(0, 0, 0.36338, 1) infinite alternate;
 }
 button, span {
   position: absolute;
@@ -59,3 +60,5 @@ button, span {
   left: 135px;
   transform: translateX(-50%);
 }
+
+#game { background-image: url("img/Sfondo Gioco.png"); }

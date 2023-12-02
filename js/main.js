@@ -1,27 +1,24 @@
-((main, settings, volume) => {
-  assertNotNull(document.getElementById("show-settings")).addEventListener("click", () => {
-    main.classList.add("hidden");
-    settings.removeAttribute("class");
-  });
-  assertNotNull(document.getElementById("back")).addEventListener("click", () => {
-    settings.classList.add("hidden");
-    main.removeAttribute("class");
-  });
+(volume => {
+  bindClick("play", () => Switcher.LEVEL.switch("game"));
+  bindClick("show-settings", () => Switcher.MAIN_MENU.switch("settings"));
+  bindClick("back", () => Switcher.MAIN_MENU.switch("main"));
 
   function updateVolume() { volume.textContent = `${SoundManager.volume}`; }
   updateVolume();
-  assertNotNull(document.getElementById("inc")).addEventListener("click", () => {
-    SoundManager.volume++;
-    updateVolume();
-  });
-  assertNotNull(document.getElementById("dec")).addEventListener("click", () => {
-    SoundManager.volume--;
-    updateVolume();
-  });
-})(
-  assertNotNull(document.getElementById("main")),
-  assertNotNull(document.getElementById("settings")),
-  assertNotNull(document.getElementById("volume"))
-);
+  for (const {id, delta} of [{id: "inc", delta: 1}, {id: "dec", delta: -1}]) {
+    bindClick(id, () => {
+      SoundManager.volume += delta;
+      updateVolume();
+    });
+  }
+
+  /**
+   * @param {string} id
+   * @param {() => void} onClick
+   */
+  function bindClick(id, onClick) {
+    assertNotNull(document.getElementById(id)).addEventListener("click", onClick);
+  }
+})(assertNotNull(document.getElementById("volume")));
 
 SoundManager.play("main");
