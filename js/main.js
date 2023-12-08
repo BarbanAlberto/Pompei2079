@@ -1,5 +1,9 @@
 (volume => {
-  bindClick("play", () => Switcher.LEVEL.switch("game"));
+  bindClick("play", () => {
+    Switcher.LEVEL.switch("game");
+    SoundManager.stop();
+    SoundManager.play("ingame");
+  });
   bindClick("show-settings", () => Switcher.MAIN_MENU.switch("settings"));
   bindClick("back", () => Switcher.MAIN_MENU.switch("main"));
 
@@ -11,6 +15,12 @@
       updateVolume();
     });
   }
+
+  bindClick("exit", () => {
+    Switcher.LEVEL.switch("main");
+    SoundManager.stop();
+    SoundManager.play("main");
+  });
 
   /**
    * @param {string} id

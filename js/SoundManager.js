@@ -13,36 +13,28 @@ class SoundManager {
     for (const sound of Object.values(this.#SOUNDS)) sound.volume = scaledVolume;
   }
 
-  static #interacted = false;
+  /** @type {Set<HTMLAudioElement> | true} */ static #interacted = new Set();
   static #stopping = false;
 
   /** @param {"main" | "ingame"} sound */
   static play(sound) {
-    if (this.#interacted) {
-      this.#play(sound);
-      return;
-    }
-
-    const play = () => {
-      this.#interacted = true;
-      removeEventListener("click", play);
-      removeEventListener("keydown", play);
-      this.#play(sound);
-    };
-
-    addEventListener("click", play);
-    addEventListener("keydown", play);
+    const audio = this.#SOUNDS[sound];
+    if (this.#interacted == true) audio.play();
+    else this.#interacted.add(audio);
   }
 
-  /** @param {Parameters<typeof SoundManager["play"]>[0]} sound */
-  static #play(sound) { this.#SOUNDS[sound].play(); }
-
   static stop() {
-    this.#stopping = true;
-    for (const sound of Object.values(this.#SOUNDS)) {
-      if (!sound.loop) continue;
-      sound.pause();
-      sound.currentTime = 0;
+    if (this.#interacted != true) {
+      for (const sound of this.#interacted) {
+        if (sound.loop) this.#interacted.delete(sound);
+      }
+    } else {
+      this.#stopping = true;
+      for (const sound of Object.values(this.#SOUNDS)) {
+        if (!sound.loop) continue;
+        sound.pause();
+        sound.currentTime = 0;
+      }
     }
   }
 
@@ -65,5 +57,18 @@ class SoundManager {
     return sound;
   }
 
-  static { this.volume = this.#MAX_VOLUME / 2; }
+  static {
+    this.volume = this.#MAX_VOLUME / 2;
+
+    const onInteraction = () => {
+      removeEventListener("click", onInteraction);
+      removeEventListener("keydown", onInteraction);
+      if (this.#interacted == true) throw new TypeError("Assertion failed: interacted was already true");
+      for (const sound of this.#interacted) sound.play();
+      this.#interacted = true;
+    };
+
+    addEventListener("click", onInteraction);
+    addEventListener("keydown", onInteraction);
+  }
 }
