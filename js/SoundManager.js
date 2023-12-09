@@ -60,7 +60,9 @@ class SoundManager {
   static {
     this.volume = this.#MAX_VOLUME / 2;
 
-    const onInteraction = () => {
+    /** @param {MouseEvent | KeyboardEvent} e */
+    const onInteraction = e => {
+      if (e instanceof KeyboardEvent && (e.key.length != 1 && e.key != "Tab")) return;
       removeEventListener("click", onInteraction);
       removeEventListener("keydown", onInteraction);
       if (this.#interacted == true) throw new TypeError("Assertion failed: interacted was already true");
