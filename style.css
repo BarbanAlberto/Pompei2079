@@ -8,6 +8,7 @@ body {
   width: 640px;
   height: 360px;
   background-color: #121212;
+  color: #181425;
   font-family: "Amiga Forever Pro 2";
   transform-origin: top left;
 }
@@ -60,5 +61,6 @@ button, span {
   left: 135px;
   transform: translateX(-50%);
 }
+button:hover { color: #c02020; }
 
 #game { background-image: url("img/Sfondo Gioco.png"); }
