@@ -47,7 +47,7 @@ button {
   transform: rotate(-30deg) scale(0.45);
   animation: splash 0.25s cubic-bezier(0, 0, 0.36338, 1) infinite alternate;
 }
-button, span {
+#main-menu button, #main-menu span {
   position: absolute;
   left: 20px;
   font-size: 12px;
@@ -57,10 +57,56 @@ button, span {
 #delete, #dec { top: 165px; }
 #show-settings, #back { top: 225px; }
 #volume-label, #volume { top: 135px; }
-#volume, #inc, #dec {
+#main-menu #volume, #main-menu #inc, #main-menu #dec {
   left: 135px;
   transform: translateX(-50%);
 }
 button:hover { color: #c02020; }
 
 #game { background-image: url("img/Sfondo Gioco.png"); }
+#resources {
+  width: min-content;
+  display: grid;
+  grid-template-columns: 32px auto;
+  grid-template-rows: repeat(3, 32px);
+  column-gap: 2px;
+  justify-items: center;
+  align-items: center;
+  font-size: 14px;
+}
+#time {
+  position: absolute;
+  left: 88px;
+  top: 1px;
+}
+#game > button { position: absolute; }
+#play-pause {
+  left: 596px;
+  top: 6px;
+}
+#save {
+  left: 599px;
+  top: 48px;
+}
+#show-vulcano, #show-museo { right: 0; }
+#show-vulcano { top: 149px; }
+#show-museo { top: 186px; }
+#game > button > img { display: block; }
+#save > img { width: 24px; }
+#show-vulcano > img, #show-museo > img { width: 32px; }
+.lotto {
+  width: 48px;
+  height: 48px;
+}
+.lotto::before {
+  content: url("img/Lotto.png");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  pointer-events: none;
+}
+.lotto > img {
+  position: absolute;
+  top: 0;
+}
