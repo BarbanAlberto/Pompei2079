@@ -19,16 +19,18 @@ button {
   font: inherit;
 }
 .hidden { visibility: hidden; }
+.unloaded { display: none; }
 
 .level {
   aspect-ratio: 16 / 9;
-  background-size: cover;
   image-rendering: pixelated;
   user-select: none;
 }
-.unloaded { display: none; }
 
-#main-menu { background-image: url("img/Sfondo Menù Principale.png"); }
+#main-menu {
+  background-image: url("img/Sfondo Menù Principale.png");
+  background-size: cover;
+}
 #logo {
   position: absolute;
   left: 298.6px;
@@ -63,7 +65,13 @@ button {
 }
 button:hover { color: #c02020; }
 
-#game { background-image: url("img/Sfondo Gioco.png"); }
+#game > div {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+
+#buildings { background-image: url("img/Sfondo Gioco.png"); }
 #resources {
   width: min-content;
   display: grid;
@@ -79,7 +87,7 @@ button:hover { color: #c02020; }
   left: 88px;
   top: 1px;
 }
-#game > button { position: absolute; }
+#game button { position: absolute; }
 #play-pause {
   left: 596px;
   top: 6px;
@@ -88,17 +96,17 @@ button:hover { color: #c02020; }
   left: 599px;
   top: 48px;
 }
-#show-vulcano, #show-museo { right: 0; }
-#show-vulcano { top: 149px; }
-#show-museo { top: 186px; }
-#game > button > img { display: block; }
+#show-volcano, #show-museum { right: 0; }
+#show-volcano { top: 149px; }
+#show-museum { top: 186px; }
+#game button > img { display: block; }
 #save > img { width: 24px; }
-#show-vulcano > img, #show-museo > img { width: 32px; }
-.lotto {
+#show-volcano > img, #show-museum > img { width: 32px; }
+.lot {
   width: 48px;
   height: 48px;
 }
-.lotto::before {
+.lot::before {
   content: url("img/Lotto.png");
   position: absolute;
   top: 50%;
@@ -106,7 +114,40 @@ button:hover { color: #c02020; }
   transform: translate(-50%, -50%) scale(0.6);
   pointer-events: none;
 }
-.lotto > img {
+.lot > img {
   position: absolute;
   top: 0;
+}
+
+.back { top: 16px; }
+.back > img { width: 32px; }
+
+#volcano { background-image: url("img/Vulcano.jpg"); }
+#build {
+  left: 443px;
+  top: 293px;
+}
+#build > img { width: 184px; }
+
+#museum { background-image: url("img/Sfondo Museo.png"); }
+@keyframes unknown {
+  from {
+    animation-timing-function: cubic-bezier(0, 0, 0.36338, 1);
+  }
+  25% {
+    transform: translateY(-5px);
+    animation-timing-function: cubic-bezier(0.63662, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.36338, 1);
+  }
+  75% {
+    transform: translateY(5px);
+    animation-timing-function: cubic-bezier(0.63662, 0, 1, 1);
+  }
+}
+.artifact {
+  position: absolute;
+  animation: unknown 1s infinite;
 }
