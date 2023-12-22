@@ -27,6 +27,8 @@
       const lot = assertInstanceOf(lotTemplate.cloneNode(true).childNodes[1], HTMLElement);
       lot.style.left = `${x * 50 + 146}px`;
       lot.style.top = `${(y * 2 + 1 - x % 2) * 29 + 218}px`;
+      const animator = new Animator(assertInstanceOf(lot.firstElementChild, HTMLElement));
+      lot.addEventListener("click", () => animator.toggle());
       buildings.append(lot);
     }
   }

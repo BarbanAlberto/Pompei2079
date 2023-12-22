@@ -82,6 +82,17 @@ button:hover { color: #c02020; }
   align-items: center;
   font-size: 14px;
 }
+@keyframes resource {
+  from { object-position: 0; }
+  to { object-position: 100%; }
+}
+#minerals, #coins {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+}
+#minerals { animation: resource 1.5s steps(9, jump-none) infinite; }
+#coins { animation: resource 1.1s steps(10, jump-none) infinite; }
 #time {
   position: absolute;
   left: 88px;
@@ -117,6 +128,10 @@ button:hover { color: #c02020; }
 .lot > img {
   position: absolute;
   top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: calc(var(--frame) * 25%);
 }
 
 .back { top: 16px; }
@@ -131,9 +146,7 @@ button:hover { color: #c02020; }
 
 #museum { background-image: url("img/Sfondo Museo.png"); }
 @keyframes unknown {
-  from {
-    animation-timing-function: cubic-bezier(0, 0, 0.36338, 1);
-  }
+  from { animation-timing-function: cubic-bezier(0, 0, 0.36338, 1); }
   25% {
     transform: translateY(-5px);
     animation-timing-function: cubic-bezier(0.63662, 0, 1, 1);
