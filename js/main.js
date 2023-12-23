@@ -27,7 +27,9 @@
       const lot = assertInstanceOf(lotTemplate.cloneNode(true).childNodes[1], HTMLElement);
       lot.style.left = `${x * 50 + 146}px`;
       lot.style.top = `${(y * 2 + 1 - x % 2) * 29 + 218}px`;
-      const animator = new Animator(assertInstanceOf(lot.firstElementChild, HTMLElement));
+      const img = assertInstanceOf(lot.firstElementChild, HTMLImageElement);
+      img.alt = `Apri / Chiudi menù edificio ${x * 2 + y + 1}`;
+      const animator = new Animator(img);
       lot.addEventListener("click", () => animator.toggle());
       buildings.append(lot);
     }
