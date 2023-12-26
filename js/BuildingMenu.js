@@ -38,22 +38,28 @@ class BuildingMenu {
     this.#element.close();
   }
 
-  static {
-    const buildingTemplate = assertInstanceOf(document.getElementById("building"), HTMLTemplateElement).content;
-    const sellButton = assertInstanceOf(this.#element.firstElementChild, HTMLElement);
+  /**
+   * @param {HTMLImageElement} img
+   * @param {BuildingType} type
+   */
+  static setBuildingImg(img, type) { img.src = `img/${type.id}.png`; }
 
-    for (const buildingType of BuildingType.values()) {
-      const button = assertInstanceOf(buildingTemplate.cloneNode(true).childNodes[1], HTMLElement);
-      assertInstanceOf(button.children[0], HTMLImageElement).src = `img/${buildingType.id}.png`;
+  static {
+    const template = assertInstanceOf(document.getElementById("building"), HTMLTemplateElement).content;
+    const sell = assertInstanceOf(this.#element.firstElementChild, HTMLElement);
+
+    for (const type of BuildingType.values()) {
+      const button = assertInstanceOf(template.cloneNode(true).childNodes[1], HTMLElement);
+      this.setBuildingImg(assertInstanceOf(button.children[0], HTMLImageElement), type);
 
       const info = assertNotUndefined(button.children[1]);
-      assertNotUndefined(info.children[0]).textContent = buildingType.name;
+      assertNotUndefined(info.children[0]).textContent = type.name;
 
       this.#costs.push(assertNotUndefined(info.children[1]));
-      button.addEventListener("click", () => assertNotNull(this.#open).onType(buildingType));
-      sellButton.before(button);
+      button.addEventListener("click", () => assertNotNull(this.#open).onType(type));
+      sell.before(button);
     }
 
-    sellButton.addEventListener("click", () => assertNotNull(this.#open).onType(null));
+    sell.addEventListener("click", () => assertNotNull(this.#open).onType(null));
   }
 }

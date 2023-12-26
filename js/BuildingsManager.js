@@ -1,7 +1,25 @@
 class BuildingsManager {
   static #COLUMNS = 7;
   static #ROWS = 2;
+  /** @type {ParentNode[]} */ static #lots = [];
   /** @type {(?Building)[]} */ static #buildings = Array.from({length: this.#ROWS * this.#COLUMNS}, () => null);
+
+  /**
+   * @param {number} id
+   * @param {?BuildingType} type
+   */
+  static #set(id, type) {
+    const lot = assertNotUndefined(this.#lots[id]);
+    if (type != null) {
+      this.#buildings[id] = new Building(type);
+      const img = new Image();
+      BuildingMenu.setBuildingImg(img, type);
+      lot.append(img);
+    } else {
+      this.#buildings[id] = null;
+      assertNotNull(lot.lastChild).remove();
+    }
+  }
 
   static {
     const lotTemplate = assertInstanceOf(document.getElementById("lot"), HTMLTemplateElement).content;
@@ -28,12 +46,13 @@ class BuildingsManager {
             BuildingMenu.open(curr, type => {
               if (curr == null || type == null) {
                 BuildingMenu.close();
-                this.#buildings[id] = type != null ? new Building(type) : null;
+                this.#set(id, type);
               } else if (type == curr.type) curr.upgrade();
             }).then(() => animator.toggle());
           } else BuildingMenu.close();
         });
 
+        this.#lots.push(lot);
         BuildingMenu.element.before(lot);
       }
     }

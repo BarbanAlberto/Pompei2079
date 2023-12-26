@@ -116,16 +116,22 @@ button {
   position: absolute;
   top: 0;
   width: 100%;
+}
+.lot > img:first-child {
   height: 100%;
   object-fit: cover;
   object-position: calc(var(--frame) * 25%);
 }
+.lot > img:nth-child(2) {
+  transform: translateY(-8px);
+  pointer-events: none;
+}
 dialog {
   width: 256px;
-  height: 256px;
-  top: -23px;
+  height: 210px;
+  top: 0;
   border: 0;
-  padding: 66px 23px;
+  padding: 43px 23px;
   box-sizing: border-box;
   background-color: transparent;
   background-image: url("img/Menù Edificio.png");
