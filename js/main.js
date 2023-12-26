@@ -1,4 +1,4 @@
-((volume, buildings, lotTemplate, museum, artifactTemplate) => {
+((volume, museum, artifactTemplate) => {
   bindClick("play", () => {
     Switcher.LEVEL.switch("game");
     SoundManager.stop();
@@ -22,18 +22,7 @@
     SoundManager.play("main");
   });
 
-  for (let x = 0; x < 7; x++) {
-    for (let y = 0; y < 2; y++) {
-      const lot = assertInstanceOf(lotTemplate.cloneNode(true).childNodes[1], HTMLElement);
-      lot.style.left = `${x * 50 + 146}px`;
-      lot.style.top = `${(y * 2 + 1 - x % 2) * 29 + 218}px`;
-      const img = assertInstanceOf(lot.firstElementChild, HTMLImageElement);
-      img.alt = `Apri / Chiudi menù edificio ${x * 2 + y + 1}`;
-      const animator = new Animator(img);
-      lot.addEventListener("click", () => animator.toggle());
-      buildings.append(lot);
-    }
-  }
+  
 
   bindClick("show-volcano", () => Switcher.GAME.switch("volcano"));
   bindClick("show-museum", () => Switcher.GAME.switch("museum"));
@@ -59,8 +48,6 @@
   }
 })(
   assertNotNull(document.getElementById("volume")),
-  assertNotNull(document.getElementById("buildings")),
-  assertInstanceOf(document.getElementById("lot"), HTMLTemplateElement).content,
   assertNotNull(document.getElementById("museum")),
   assertInstanceOf(document.getElementById("artifact"), HTMLTemplateElement).content
 );

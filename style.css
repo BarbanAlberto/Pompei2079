@@ -63,7 +63,7 @@ button {
   left: 135px;
   transform: translateX(-50%);
 }
-button:hover { color: #c02020; }
+#main-menu button:hover { color: #c02020; }
 
 #game > div {
   width: 100%;
@@ -71,6 +71,8 @@ button:hover { color: #c02020; }
   background-size: cover;
 }
 
+#game > div > button { position: absolute; }
+#game > div > button > img { display: block; }
 #buildings { background-image: url("img/Sfondo Gioco.png"); }
 #resources {
   width: min-content;
@@ -98,21 +100,6 @@ button:hover { color: #c02020; }
   left: 88px;
   top: 1px;
 }
-#game button { position: absolute; }
-#play-pause {
-  left: 596px;
-  top: 6px;
-}
-#save {
-  left: 599px;
-  top: 48px;
-}
-#show-volcano, #show-museum { right: 0; }
-#show-volcano { top: 149px; }
-#show-museum { top: 186px; }
-#game button > img { display: block; }
-#save > img { width: 24px; }
-#show-volcano > img, #show-museum > img { width: 32px; }
 .lot {
   width: 48px;
   height: 48px;
@@ -133,6 +120,53 @@ button:hover { color: #c02020; }
   object-fit: cover;
   object-position: calc(var(--frame) * 25%);
 }
+dialog {
+  width: 256px;
+  height: 256px;
+  top: -23px;
+  border: 0;
+  padding: 66px 23px;
+  box-sizing: border-box;
+  background-color: transparent;
+  background-image: url("img/Menù Edificio.png");
+  grid-template-columns: 102px 102px;
+  grid-template-rows: 38px 38px 38px 26px;
+  gap: 2px 6px;
+  font-size: 8px;
+}
+dialog[open] { display: grid; }
+dialog > button:not(:last-of-type) {
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+dialog img { width: 26px; }
+dialog div {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+dialog > button:last-of-type {
+  grid-column-end: span 2;
+  width: 138px;
+  justify-self: center;
+  font-size: 11px;
+}
+#play-pause {
+  left: 596px;
+  top: 6px;
+}
+#save {
+  left: 599px;
+  top: 48px;
+}
+#save > img { width: 24px; }
+#show-volcano, #show-museum { right: 0; }
+#show-volcano { top: 149px; }
+#show-museum { top: 186px; }
+#show-volcano > img, #show-museum > img { width: 32px; }
 
 .back { top: 16px; }
 .back > img { width: 32px; }
