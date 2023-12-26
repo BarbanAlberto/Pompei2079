@@ -70,12 +70,29 @@ button {
   height: 100%;
   background-size: cover;
 }
-
 #game > div > button { position: absolute; }
 #game > div > button > img { display: block; }
+
 #buildings { background-image: url("img/Sfondo Gioco.png"); }
+@keyframes sprite {
+  from { object-position: 0; }
+  to { object-position: 100%; }
+}
+#flying-objects {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#flying-objects > img { position: absolute; }
+#flying-objects > img.bird {
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+  animation: sprite 1375ms steps(8, jump-none) infinite;
+}
 #resources {
-  width: min-content;
+  position: relative;
   display: grid;
   grid-template-columns: 32px auto;
   grid-template-rows: repeat(3, 32px);
@@ -89,12 +106,8 @@ button {
   height: 24px;
   object-fit: cover;
 }
-@keyframes resource {
-  from { object-position: 0; }
-  to { object-position: 100%; }
-}
-#minerals-icon { animation: resource 1.5s steps(9, jump-none) infinite; }
-#coins-icon { animation: resource 1.1s steps(10, jump-none) infinite; }
+#minerals-icon { animation: sprite 1.5s steps(9, jump-none) infinite; }
+#coins-icon { animation: sprite 1.1s steps(10, jump-none) infinite; }
 #time {
   position: absolute;
   left: 88px;
