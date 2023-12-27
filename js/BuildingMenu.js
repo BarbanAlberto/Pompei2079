@@ -5,7 +5,7 @@ class BuildingMenu {
   /** @type {?{onType(type: ?BuildingType): void, onClose(): void}} */ static #open = null;
 
   /**
-   * @param {?{type: BuildingType, upgradeCost: number}} currBuilding
+   * @param {?{type: BuildingType, level: number}} currBuilding
    * @param {(type: ?BuildingType) => void} callback
    * @returns {Promise<void>}
    */
@@ -24,11 +24,12 @@ class BuildingMenu {
     });
   }
 
-  /** @param {?{type: BuildingType, upgradeCost: number}} currBuilding */
+  /** @param {?{type: BuildingType, level: number}} currBuilding */
   static #updateCosts(currBuilding) {
-    for (const cost of this.#costs) cost.textContent = Building.CREATION_COST.toString();
+    for (const cost of this.#costs) cost.textContent = BuildingType.CREATION_COST.toString();
     if (currBuilding != null) {
-      assertNotUndefined(this.#costs[BuildingType.values().indexOf(currBuilding.type)]).textContent = currBuilding.upgradeCost.toString();
+      assertNotUndefined(this.#costs[BuildingType.values().indexOf(currBuilding.type)]).textContent =
+        (currBuilding.level * BuildingType.UPGRADE_COST_INCREMENT).toString();
     }
   }
 

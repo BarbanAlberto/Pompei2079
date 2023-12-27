@@ -3,6 +3,8 @@ class BuildingsManager {
   static #ROWS = 2;
   /** @type {ParentNode[]} */ static #lots = [];
   /** @type {(?Building)[]} */ static #buildings = Array.from({length: this.#ROWS * this.#COLUMNS}, () => null);
+  static fortunePlaced = false;
+  static wealthPlaced = false;
 
   /**
    * @param {number} id
@@ -15,7 +17,7 @@ class BuildingsManager {
       const img = new Image();
       BuildingMenu.setBuildingImg(img, type);
       lot.append(img);
-    } else {
+    } else if (this.#buildings[id] != null) {
       this.#buildings[id] = null;
       assertNotNull(lot.lastChild).remove();
     }
@@ -40,16 +42,24 @@ class BuildingsManager {
         animators.push(animator);
 
         lot.addEventListener("click", () => {
-          if (!animator.toggled) {
-            animator.toggle();
-            const curr = assertNotUndefined(this.#buildings[id]);
-            BuildingMenu.open(curr, type => {
-              if (curr == null || type == null) {
-                BuildingMenu.close();
-                this.#set(id, type);
-              } else if (type == curr.type) curr.upgrade();
-            }).then(() => animator.toggle());
-          } else BuildingMenu.close();
+          if (animator.toggled) {
+            BuildingMenu.close();
+            return;
+          }
+
+          animator.toggle();
+          const curr = assertNotUndefined(this.#buildings[id]);
+          BuildingMenu.open(curr, type => {
+            if (type == null) {
+              curr?.destroy();
+              BuildingMenu.close();
+              this.#set(id, null);
+            } else if (curr == null) {
+              if (!type.onCreate()) return;
+              BuildingMenu.close();
+              this.#set(id, type);
+            } else if (type == curr.type) curr.upgrade();
+          }).then(() => animator.toggle());
         });
 
         this.#lots.push(lot);
