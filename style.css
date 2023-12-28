@@ -198,22 +198,23 @@ dialog > button:last-of-type {
 #build > img { width: 184px; }
 
 #museum { background-image: url("img/Sfondo Museo.png"); }
+.artifact, .unknown-artifact {
+  position: absolute;
+  transform: translateX(-50%);
+}
 @keyframes unknown {
   from { animation-timing-function: cubic-bezier(0, 0, 0.36338, 1); }
   25% {
-    transform: translateY(-5px);
+    transform: translate(-50%, -5px);
     animation-timing-function: cubic-bezier(0.63662, 0, 1, 1);
   }
   50% {
-    transform: none;
+    transform: translateX(-50%);
     animation-timing-function: cubic-bezier(0, 0, 0.36338, 1);
   }
   75% {
-    transform: translateY(5px);
+    transform: translate(-50%, 5px);
     animation-timing-function: cubic-bezier(0.63662, 0, 1, 1);
   }
 }
-.artifact {
-  position: absolute;
-  animation: unknown 1s infinite;
-}
+.unknown-artifact { animation: unknown 1s infinite; }
