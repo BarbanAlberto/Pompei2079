@@ -1,10 +1,8 @@
 class BuildingsManager {
-  static #COLUMNS = 7;
   static #ROWS = 2;
+  static #COLUMNS = 7;
   /** @type {ParentNode[]} */ static #lots = [];
   /** @type {(?Building)[]} */ static #buildings = Array.from({length: this.#ROWS * this.#COLUMNS}, () => null);
-  static fortunePlaced = false;
-  static wealthPlaced = false;
 
   /**
    * @param {number} id

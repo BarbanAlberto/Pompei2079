@@ -30,6 +30,7 @@ class FlyingObjectsManager {
       const width = (isBird ? img.naturalWidth / 8 : img.naturalWidth) * scale;
       const startX = fromEdge ? right ? -width : 640 : Math.floor(Math.random() * (640 + width)) - width;
       const endX = right ? 640 : -width;
+
       img.animate(
         [
           {transform: `translateX(${startX}px) scale(${scale})`},
@@ -39,7 +40,7 @@ class FlyingObjectsManager {
       ).addEventListener("finish", () => img.remove());
 
       this.#parent.append(img);
-    });
+    }, {once: true});
   }
 
   static {

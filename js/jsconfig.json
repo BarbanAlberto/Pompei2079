@@ -1,5 +1,4 @@
 {
-  "exclude": ["./bot/main.js"],
   "compilerOptions": {
     "target": "ESNext",
     "allowUnreachableCode": false,

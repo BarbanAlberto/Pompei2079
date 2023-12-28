@@ -31,7 +31,7 @@ class Switcher {
     this.#elements = elements;
     this.#hideClass = isDiff ? "hidden" : "unloaded";
 
-    const values = Object.values(/** @type {{[name: string]: HTMLElement}} */ (elements));
+    const values = Object.values(/** @type {{[name: string]: HTMLElement}} */ (this.#elements));
     this.#shown = assertNotUndefined(values[0]);
     for (const el of values.slice(1)) this.#setHidden(el, true);
   }
@@ -39,7 +39,7 @@ class Switcher {
   /** @param {TNames[number]} name */
   switch(name) {
     this.#setHidden(this.#shown, true);
-    this.#shown = this.#elements[name]
+    this.#shown = this.#elements[name];
     this.#setHidden(this.#shown, false);
   }
 

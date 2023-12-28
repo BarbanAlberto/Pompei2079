@@ -1,23 +1,16 @@
+/** @typedef {"main" | "ingame" | "creation" | "market" | "furnace" | "mine" | "destruction"} Sound */
+
 class SoundManager {
   static #MAX_VOLUME = 10;
-  static #SOUNDS = /** @type {const} */ ({
-    main: {
-      filename: "Alexander Nakarada - Battle Of The Creek.m4a",
-      music: true
-    },
-    ingame: {
-      filename: "Age of Empires II - Bass Bag.mp3",
-      music: true
-    },
-    creation: {
-      filename: "Creazione Edificio.mp3",
-      music: false
-    },
-    destruction: {
-      filename: "Distruzione Edificio.mp3",
-      music: false
-    }
-  });
+  /** @type {Record<Sound, {readonly filename: string, readonly music: boolean}>} */ static #SOUNDS = {
+    main: {filename: "Alexander Nakarada - Battle Of The Creek.m4a", music: true},
+    ingame: {filename: "Age of Empires II - Bass Bag.mp3", music: true},
+    creation: {filename: "Creazione Edificio.mp3", music: false},
+    market: {filename: "Produzione Mercato.mp3", music: false},
+    furnace: {filename: "Produzione Fornace.mp3", music: false},
+    mine: {filename: "Produzione Miniera.mp3", music: false},
+    destruction: {filename: "Distruzione Edificio.mp3", music: false}
+  };
 
   /** @type {Set<HTMLAudioElement>} */ static #playing = new Set();
   /** @type {boolean} */ static #interacted = false;
@@ -27,10 +20,10 @@ class SoundManager {
   static set volume(volume) {
     this.#volume = Math.min(Math.max(volume, 0), this.#MAX_VOLUME);
     const scaledVolume = this.#volume / this.#MAX_VOLUME;
-    for (const sound of this.#playing) sound.volume = scaledVolume;
+    for (const audio of this.#playing) audio.volume = scaledVolume;
   }
 
-  /** @param {"main" | "ingame" | "creation" | "destruction"} sound */
+  /** @param {Sound} sound */
   static play(sound) {
     const audio = this.#instantiate(sound);
     if (this.#interacted) audio.play();
@@ -39,23 +32,23 @@ class SoundManager {
 
   static stop() {
     if (this.#interacted) {
-      for (const sound of this.#playing) {
-        sound.pause();
-        sound.src = sound.src;
+      for (const audio of this.#playing) {
+        audio.pause();
+        audio.src = audio.src;
       }
     }
 
     this.#playing.clear();
   }
 
-  /** @param {"main" | "ingame" | "creation" | "destruction"} name */
-  static #instantiate(name) {
-    const info = this.#SOUNDS[name];
-    const sound = new Audio(`sounds/${info.filename}`);
-    sound.volume = this.#volume / this.#MAX_VOLUME;
-    sound.loop = info.music;
-    sound.addEventListener("pause", () => sound.currentTime == sound.duration ? this.#playing.delete(sound) : sound.play());
-    return sound;
+  /** @param {Sound} sound */
+  static #instantiate(sound) {
+    const info = this.#SOUNDS[sound];
+    const audio = new Audio(`sounds/${info.filename}`);
+    audio.volume = this.#volume / this.#MAX_VOLUME;
+    audio.loop = info.music;
+    audio.addEventListener("pause", () => audio.currentTime == audio.duration ? this.#playing.delete(audio) : audio.play());
+    return audio;
   }
 
   static {
@@ -66,7 +59,7 @@ class SoundManager {
       if (e instanceof KeyboardEvent && (e.key.length != 1 && e.key != "Tab")) return;
       removeEventListener("click", onInteraction);
       removeEventListener("keydown", onInteraction);
-      for (const sound of this.#playing) sound.play();
+      for (const audio of this.#playing) audio.play();
       this.#interacted = true;
     };
 
