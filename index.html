@@ -34,7 +34,9 @@
           <img src="img/Monete.png" id="coins-icon" alt="Monete">
           <span id="coins"></span>
         </div>
-        <img id="time" src="img/Barra Tempo.png" alt="Tempo">
+        <div id="time-container">
+          <div id="time"></div>
+        </div>
         <dialog id="building-menu">
           <button>Vendi</button>
           <template id="building">
@@ -59,7 +61,6 @@
         <button id="show-museum">
           <img src="img/Bottone Museo.png" alt="Mostra il museo">
         </button>
-        <button id="exit">Esci (debug)</button>
         <template id="lot">
           <button class="lot">
             <img src="img/Bottone Menù.png">
@@ -73,6 +74,7 @@
         <button id="build">
           <img src="img/Costruisci.png" alt="Costruisci">
         </button>
+        <div id="overlay" class="unloaded"></div>
       </div>
       <div id="museum">
         <button class="back">
@@ -90,6 +92,7 @@
     <script src="js/Animator.js"></script>
     <script src="js/FlyingObjectsManager.js"></script>
     <script src="js/ResourceManager.js"></script>
+    <script src="js/GameManager.js"></script>
     <script src="js/BuildingType.js"></script>
     <script src="js/Building.js"></script>
     <script src="js/BuildingMenu.js"></script>

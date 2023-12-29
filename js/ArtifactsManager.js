@@ -7,13 +7,20 @@ class ArtifactsManager {
   static #ROWS = 2;
   static #COLUMNS = this.TOTAL / this.#ROWS;
   static #element = assertNotNull(document.getElementById("museum"));
-  /** @type {{unknown: ChildNode, artifact: Element}[]} */ static #artifacts = [];
+  /** @type {{unknown: Element, artifact: Element}[]} */ static #artifacts = [];
 
   /** @param {number} i */
   static onArtifactFound(i) {
     const artifact = assertNotUndefined(this.#artifacts[i]);
-    artifact.unknown.remove();
+    artifact.unknown.classList.add("unloaded");
     artifact.artifact.classList.remove("unloaded");
+  }
+
+  static reset() {
+    for (const artifact of this.#artifacts) {
+      artifact.artifact.classList.add("unloaded");
+      artifact.unknown.classList.remove("unloaded");
+    }
   }
 
   static {

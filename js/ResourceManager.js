@@ -38,6 +38,15 @@ class ResourceManager {
     this.#updateDisplay(res);
   }
 
+  static reset() {
+    for (const res of Object.values(this.#resources)) {
+      res.amount = this.#INITIAL_AMOUNT;
+      this.#updateDisplay(res);
+    }
+
+    for (const resource of /** @type {const} */ (["bricks", "minerals", "coins"])) this.bonuses[resource] = 0;
+  }
+
   /** @param {{element: Node, amount: number}} res */
   static #updateDisplay(res) { res.element.textContent = Math.round(res.amount).toString(); }
 

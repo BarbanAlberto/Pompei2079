@@ -1,8 +1,8 @@
 class BuildingsManager {
   static #ROWS = 2;
   static #COLUMNS = 7;
-  /** @type {ParentNode[]} */ static #lots = [];
   /** @type {(?Building)[]} */ static #buildings = Array.from({length: this.#ROWS * this.#COLUMNS}, () => null);
+  /** @type {ParentNode[]} */ static #lots = [];
 
   /**
    * @param {number} id
@@ -21,9 +21,17 @@ class BuildingsManager {
     }
   }
 
+  static reset() {
+    BuildingMenu.close();
+
+    for (let i = 0; i < this.#buildings.length; i++) {
+      this.#buildings[i]?.destroy();
+      this.#set(i, null);
+    }
+  }
+
   static {
     const lotTemplate = assertInstanceOf(document.getElementById("lot"), HTMLTemplateElement).content;
-    const /** @type {Animator[]} */ animators = [];
 
     for (let x = 0; x < this.#COLUMNS; x++) {
       for (let y = 0; y < this.#ROWS; y++) {
@@ -36,9 +44,7 @@ class BuildingsManager {
         const img = assertInstanceOf(lot.firstElementChild, HTMLImageElement);
         img.alt = `Apri / Chiudi menù edificio ${id + 1}`;
 
-        const animator = new Animator(img);
-        animators.push(animator);
-
+        const animator = new Animator(img, 16, 0, 4);
         lot.addEventListener("click", () => {
           if (animator.toggled) {
             BuildingMenu.close();

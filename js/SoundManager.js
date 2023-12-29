@@ -26,7 +26,12 @@ class SoundManager {
   /** @param {Sound} sound */
   static play(sound) {
     const audio = this.#instantiate(sound);
-    if (this.#interacted) audio.play();
+    if (this.#interacted) {
+      audio.play().catch(e => {
+        if (e.name != "AbortError") throw e;
+      });
+    }
+
     this.#playing.add(audio);
   }
 

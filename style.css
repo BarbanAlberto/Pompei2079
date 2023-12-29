@@ -8,7 +8,6 @@ body {
   width: 640px;
   height: 360px;
   background-color: #121212;
-  color: #181425;
   font-family: "Amiga Forever Pro 2";
   transform-origin: top left;
 }
@@ -17,6 +16,7 @@ button {
   border: 0;
   padding: 0;
   font: inherit;
+  color: inherit;
 }
 .hidden { visibility: hidden; }
 .unloaded { display: none; }
@@ -30,6 +30,7 @@ button {
 #main-menu {
   background-image: url("img/Sfondo Menù Principale.png");
   background-size: cover;
+  color: #181425;
 }
 #logo {
   position: absolute;
@@ -108,10 +109,19 @@ button {
 }
 #minerals-icon { animation: sprite 1.5s steps(9, jump-none) infinite; }
 #coins-icon { animation: sprite 1.1s steps(10, jump-none) infinite; }
-#time {
+#time-container {
   position: absolute;
   left: 88px;
   top: 1px;
+  width: 486px;
+  height: 38px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-image: url("img/Barra Tempo.png");
+}
+#time {
+  background-color: #33cc00;
+  height: 100%;
 }
 .lot {
   width: 48px;
@@ -190,12 +200,26 @@ dialog > button:last-of-type {
 .back { top: 16px; }
 .back > img { width: 32px; }
 
-#volcano { background-image: url("img/Vulcano.jpg"); }
+#volcano {
+  background-image: url("img/Vulcano.png");
+  background-position-x: calc(var(--frame) * 100% / 35);
+}
 #build {
   left: 443px;
   top: 293px;
 }
 #build > img { width: 184px; }
+#overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 32px;
+  color: #ffffff;
+  justify-content: center;
+  align-items: center;
+}
+#overlay:not(.unloaded) { display: flex; }
 
 #museum { background-image: url("img/Sfondo Museo.png"); }
 .artifact, .unknown-artifact {

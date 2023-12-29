@@ -10,11 +10,9 @@ class BuildingMenu {
    * @returns {Promise<void>}
    */
   static open(currBuilding, callback) {
-    if (this.#open != null) this.close();
-
+    this.close();
     this.#updateCosts(currBuilding);
     this.#element.show();
-
     return new Promise(resolve => this.#open = {
       onType: type => {
         callback(type);
@@ -34,7 +32,7 @@ class BuildingMenu {
   }
 
   static close() {
-    assertNotNull(this.#open).onClose();
+    this.#open?.onClose();
     this.#open = null;
     this.#element.close();
   }

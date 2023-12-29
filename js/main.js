@@ -3,6 +3,7 @@
     Switcher.LEVEL.switch("game");
     SoundManager.stop();
     SoundManager.play("ingame");
+    GameManager.start();
   });
   bindClick("show-settings", () => Switcher.MAIN_MENU.switch("settings"));
   bindClick("back", () => Switcher.MAIN_MENU.switch("main"));
@@ -15,12 +16,6 @@
       updateVolume();
     });
   }
-
-  bindClick("exit", () => {
-    Switcher.LEVEL.switch("main");
-    SoundManager.stop();
-    SoundManager.play("main");
-  });
 
   bindClick("show-volcano", () => Switcher.GAME.switch("volcano"));
   bindClick("show-museum", () => Switcher.GAME.switch("museum"));
