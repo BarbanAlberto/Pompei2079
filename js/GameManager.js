@@ -5,6 +5,7 @@ class GameManager {
   static #time = assertNotNull(document.getElementById("time"));
   static #volcano = assertNotNull(document.getElementById("volcano"));
   static #overlay = assertNotNull(document.getElementById("overlay"));
+  static #id = 0;
 
   static start() {
     const start = Date.now();
@@ -14,20 +15,37 @@ class GameManager {
       if (lost) this.#onLoss();
       this.#time.style.width = `${Math.ceil(time * 100)}%`;
       this.#volcano.style.setProperty("--frame", Math.floor(time * this.#FRAMES).toString());
-      if (!lost) requestAnimationFrame(onFrame);
+      if (!lost) this.#id = requestAnimationFrame(onFrame);
     }
 
     onFrame();
   }
 
+  static onWin() { this.#onEnd("Hai Vinto!!!") }
   static #onLoss() {
     SoundManager.stop();
+
+    for (const child of this.#volcano.children) {
+      if (child instanceof HTMLImageElement) child.classList.add("unloaded");
+    }
+
     new Animator(this.#volcano, 13, 22, 35).toggle();
-    for (const child of this.#volcano.children) child.classList.add("unloaded");
+    this.#onEnd("Hai perso...");
+  }
+
+  /** @param {string} text */
+  static #onEnd(text) {
+    cancelAnimationFrame(this.#id);
+    this.#id = 0;
+
+    for (const child of this.#volcano.children) {
+      if (child instanceof HTMLButtonElement) child.classList.add("unloaded");
+    }
+
     Switcher.GAME.switch("volcano");
     setTimeout(() => {
       this.#overlay.classList.remove("unloaded");
-      this.#overlay.textContent = "Hai perso...";
+      this.#overlay.textContent = text;
       setTimeout(() => {
         Switcher.LEVEL.switch("main");
         this.#reset();
@@ -39,6 +57,7 @@ class GameManager {
     for (const child of this.#volcano.children) child.classList.toggle("unloaded");
     BuildingsManager.reset();
     ResourceManager.reset();
+    CapManager.reset();
     ArtifactsManager.reset();
     Switcher.GAME.switch("buildings");
     SoundManager.stop();

@@ -204,6 +204,7 @@ dialog > button:last-of-type {
   background-image: url("img/Vulcano.png");
   background-position-x: calc(var(--frame) * 100% / 35);
 }
+#volcano > img { position: absolute; }
 #build {
   left: 443px;
   top: 293px;

@@ -19,6 +19,7 @@
 
   bindClick("show-volcano", () => Switcher.GAME.switch("volcano"));
   bindClick("show-museum", () => Switcher.GAME.switch("museum"));
+  bindClick("build", () => CapManager.tryBuild());
   for (const el of document.getElementsByClassName("back")) {
     assertInstanceOf(el, HTMLElement).addEventListener("click", () => Switcher.GAME.switch("buildings"));
   }
