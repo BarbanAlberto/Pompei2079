@@ -16,8 +16,7 @@ class GameManager {
       this.#time.style.width = `${Math.ceil(time * 100)}%`;
       this.#volcano.style.setProperty("--frame", Math.floor(time * this.#FRAMES).toString());
       if (!lost) this.#id = requestAnimationFrame(onFrame);
-    }
-
+    };
     onFrame();
   }
 

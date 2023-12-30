@@ -147,7 +147,7 @@ button {
   object-position: calc(var(--frame) * 25%);
 }
 .lot > img:nth-child(2) {
-  transform: translateY(-8px);
+  transform: translateY(-8px) scale(var(--x-scale, 1), var(--y-scale, 1));
   pointer-events: none;
 }
 @keyframes floating-text {

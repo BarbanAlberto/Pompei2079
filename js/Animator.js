@@ -40,8 +40,7 @@ class Animator {
         last = Date.now();
         this.#id = requestAnimationFrame(onFrame);
       } else this.#id = 0;
-    }
-
+    };
     onFrame();
   }
 }
