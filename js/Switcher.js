@@ -3,13 +3,13 @@ class Switcher {
   /** @type {Switcher<["main", "game"]>} */ static #LEVEL = new this({
     main: assertNotNull(document.getElementById("main-menu")),
     game: assertNotNull(document.getElementById("game"))
-  }, false);
+  }, true);
   static get LEVEL() { return this.#LEVEL; }
 
   /** @type {Switcher<["main", "settings"]>} */ static #MAIN_MENU = new this({
     main: assertNotNull(document.getElementById("main")),
     settings: assertNotNull(document.getElementById("settings"))
-  }, true);
+  }, false);
   static get MAIN_MENU() { return this.#MAIN_MENU; }
 
   /** @type {Switcher<["buildings", "volcano", "museum"]>} */ static #GAME = new this({
@@ -25,11 +25,11 @@ class Switcher {
 
   /**
    * @param {{[name in TNames[number]]: HTMLElement}} elements
-   * @param {boolean} isDiff
+   * @param {boolean} isLevel
    */
-  constructor(elements, isDiff) {
+  constructor(elements, isLevel) {
     this.#elements = elements;
-    this.#hideClass = isDiff ? "hidden" : "unloaded";
+    this.#hideClass = isLevel ? "unloaded" : "hidden";
 
     const values = Object.values(/** @type {{[name: string]: HTMLElement}} */ (this.#elements));
     this.#shown = assertNotUndefined(values[0]);

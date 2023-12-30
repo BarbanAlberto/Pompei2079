@@ -10,24 +10,13 @@ class BuildingsManager {
    */
   static #set(id, type) {
     const lot = assertNotUndefined(this.#lots[id]);
-    if (type != null) {
-      this.#buildings[id] = new Building(type);
-      const img = new Image();
-      BuildingMenu.setBuildingImg(img, type);
-      lot.append(img);
-    } else if (this.#buildings[id] != null) {
-      this.#buildings[id] = null;
-      assertNotNull(lot.lastChild).remove();
-    }
+    this.#buildings[id]?.destroy();
+    this.#buildings[id] = type != null ? new Building(type, lot) : null;
   }
 
   static reset() {
     BuildingMenu.close();
-
-    for (let i = 0; i < this.#buildings.length; i++) {
-      this.#buildings[i]?.destroy();
-      this.#set(i, null);
-    }
+    for (let i = 0; i < this.#buildings.length; i++) this.#set(i, null);
   }
 
   static {
@@ -55,7 +44,6 @@ class BuildingsManager {
           const curr = assertNotUndefined(this.#buildings[id]);
           BuildingMenu.open(curr, type => {
             if (type == null) {
-              curr?.destroy();
               BuildingMenu.close();
               this.#set(id, null);
             } else if (curr == null) {

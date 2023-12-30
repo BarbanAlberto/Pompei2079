@@ -37,19 +37,13 @@ class BuildingMenu {
     this.#element.close();
   }
 
-  /**
-   * @param {HTMLImageElement} img
-   * @param {BuildingType} type
-   */
-  static setBuildingImg(img, type) { img.src = `img/${type.id}.png`; }
-
   static {
     const template = assertInstanceOf(document.getElementById("building"), HTMLTemplateElement).content;
     const sell = assertInstanceOf(this.#element.firstElementChild, HTMLElement);
 
     for (const type of BuildingType.values()) {
       const button = assertInstanceOf(template.cloneNode(true).childNodes[1], HTMLElement);
-      this.setBuildingImg(assertInstanceOf(button.children[0], HTMLImageElement), type);
+      Building.setTypeImg(assertInstanceOf(button.children[0], HTMLImageElement), type);
 
       const info = assertNotUndefined(button.children[1]);
       assertNotUndefined(info.children[0]).textContent = type.name;

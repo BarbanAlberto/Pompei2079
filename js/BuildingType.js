@@ -12,10 +12,10 @@ class BuildingType {
     sound: "market",
     incomePerMs: 0.004,
     onUpdate(_level, cost, income) {
-      if (ResourceManager.get("minerals") < cost) return false;
+      if (ResourceManager.get("minerals") < cost) return -1;
       ResourceManager.change("minerals", -cost, true);
       ResourceManager.change("coins", income, true);
-      return true;
+      return ResourceManager.bonuses.coins;
     }
   });
 
@@ -24,10 +24,10 @@ class BuildingType {
     incomePerMs: 0.002,
     incomeIncrement: 0.4,
     onUpdate(_level, cost, income) {
-      if (ResourceManager.get("minerals") < cost) return false;
+      if (ResourceManager.get("minerals") < cost) return -1;
       ResourceManager.change("minerals", -cost, true);
       ResourceManager.change("bricks", income, true);
-      return true;
+      return ResourceManager.bonuses.bricks;
     }
   });
 
@@ -36,7 +36,7 @@ class BuildingType {
     incomePerMs: 0.004,
     onUpdate(_level, _cost, income) {
       ResourceManager.change("minerals", income, true);
-      return true;
+      return ResourceManager.bonuses.minerals;
     }
   });
 
@@ -44,7 +44,7 @@ class BuildingType {
     onUpdate(level) {
       const found = Math.random() < BuildingType.BASE_ARTIFACT_CHANCE * level;
       if (found) ArtifactsManager.onArtifactFound(Math.floor(Math.random() * ArtifactsManager.TOTAL));
-      return found;
+      return +found - 1;
     }
   });
 
@@ -85,7 +85,7 @@ class BuildingType {
    *   incomePerMs?: number,
    *   incomeIncrement?: number,
    *   onCreate?(): boolean,
-   *   onUpdate?(level: number, cost: number, income: number): boolean,
+   *   onUpdate?(level: number, cost: number, income: number): number,
    *   onDestroy?(): void
    * }} options
    */
@@ -96,7 +96,7 @@ class BuildingType {
     this.#income = (options.incomePerMs ?? BuildingType.DEFAULT_INCOME_PER_MS) * BuildingType.UPDATE_INTERVAL;
     this.#incomeIncrement = options.incomeIncrement ?? BuildingType.DEFAULT_INCOME_INCREMENT;
     this.#onCreate = options.onCreate ?? (() => true);
-    this.#onUpdate = options.onUpdate ?? (() => false);
+    this.#onUpdate = options.onUpdate ?? (() => -1);
     this.#onDestroy = options.onDestroy ?? (() => {});
   }
 
@@ -112,13 +112,12 @@ class BuildingType {
 
   /** @param {number} level */
   onUpdate(level) {
-    if (this.#onUpdate(
-      level,
-      Math.ceil(BuildingType.BASE_COST / Math.round(level / 2)),
-      ((level - 1) * this.#incomeIncrement + 1) * this.#income
-    ) && this.#sound != null) {
-      SoundManager.play(this.#sound);
-    }
+    const income = ((level - 1) * this.#incomeIncrement + 1) * this.#income;
+    const multiplier = this.#onUpdate(level, Math.ceil(BuildingType.BASE_COST / Math.round(level / 2)), income);
+    if (multiplier < 0) return 0;
+
+    if (this.#sound != null) SoundManager.play(this.#sound);
+    return income * (multiplier + 1);
   }
 
   /** @param {number} level */
