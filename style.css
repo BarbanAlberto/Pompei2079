@@ -18,6 +18,7 @@ button {
   font: inherit;
   color: inherit;
 }
+dialog { border: 0; }
 .hidden { visibility: hidden; }
 .unloaded { display: none; }
 
@@ -161,11 +162,10 @@ button {
   z-index: 1;
   pointer-events: none;
 }
-dialog {
+#building-menu {
   width: 256px;
   height: 210px;
   top: 0;
-  border: 0;
   padding: 43px 23px;
   box-sizing: border-box;
   background-color: transparent;
@@ -175,21 +175,21 @@ dialog {
   gap: 2px 6px;
   font-size: 8px;
 }
-dialog[open] { display: grid; }
-dialog > button:not(:last-of-type) {
+#building-menu[open] { display: grid; }
+#building-menu > button:not(:last-of-type) {
   padding: 6px;
   display: flex;
   align-items: center;
   gap: 6px;
 }
-dialog img { width: 26px; }
-dialog div {
+#building-menu img { width: 26px; }
+#building-menu div {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-dialog > button:last-of-type {
+#building-menu > button:last-of-type {
   grid-column-end: span 2;
   width: 138px;
   justify-self: center;
@@ -255,3 +255,36 @@ dialog > button:last-of-type {
   }
 }
 .unknown-artifact { animation: unknown 1s infinite; }
+#artifact-info {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+#artifact-info > * { position: absolute; }
+#artifact-info > img:first-child {
+  left: 285px;
+  top: 55px;
+  width: 70px;
+  height: 70px;
+  transform: scale(2);
+  object-fit: contain;
+  object-position: top;
+}
+#artifact-info > img:nth-child(2) {
+  left: 39px;
+  top: 123px;
+  transform: scale(0.75, 0.69);
+}
+#artifact-info > span {
+  left: 150px;
+  top: 178px;
+  width: 361px;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+  white-space: pre-wrap;
+}
