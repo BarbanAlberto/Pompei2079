@@ -1,4 +1,4 @@
-(volume => {
+((volume, playPause) => {
   bindClick("play", () => {
     Switcher.LEVEL.switch("game");
     SoundManager.stop();
@@ -17,6 +17,10 @@
     });
   }
 
+  const playPauseAnimator = new Animator(assertInstanceOf(playPause.firstElementChild, HTMLElement), 24, 0, 6);
+  GameManager.addToggleListener(() => playPauseAnimator.toggle());
+  playPause.addEventListener("click", () => GameManager.toggleTime());
+
   bindClick("show-volcano", () => Switcher.GAME.switch("volcano"));
   bindClick("show-museum", () => Switcher.GAME.switch("museum"));
   bindClick("build", () => CapManager.tryBuild());
@@ -31,6 +35,9 @@
   function bindClick(id, onClick) {
     assertNotNull(document.getElementById(id)).addEventListener("click", onClick);
   }
-})(assertNotNull(document.getElementById("volume")));
+})(
+  assertNotNull(document.getElementById("volume")),
+  assertNotNull(document.getElementById("play-pause"))
+);
 
 SoundManager.play("main");

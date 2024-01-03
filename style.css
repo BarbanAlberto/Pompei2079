@@ -94,6 +94,7 @@ dialog { border: 0; }
   object-fit: cover;
   animation: sprite 1375ms steps(8, jump-none) infinite;
 }
+#flying-objects.paused > img.bird { animation-play-state: paused; }
 #resources {
   position: relative;
   display: grid;
@@ -198,6 +199,12 @@ dialog { border: 0; }
 #play-pause {
   left: 596px;
   top: 6px;
+}
+#play-pause > img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  object-position: calc(var(--frame) * 100% / 6);
 }
 #save {
   left: 599px;

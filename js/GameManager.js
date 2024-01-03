@@ -1,23 +1,62 @@
 class GameManager {
   static #DURATION = (8 * 60 + 30) * 1000;
-  static #FRAMES = 22;
-  static #LOSS_INTERVAL = 2000;
+  static #FIRST_VOLCANO_FRAMES = 22;
+  static #LAST_VOLCANO_FRAME = 35;
+  static #ERUPTION_FPS = 13;
+  static #LOSS_STOP_DELAY = 1100;
+  static #END_INTERVAL = 2000;
   static #time = assertNotNull(document.getElementById("time"));
   static #volcano = assertNotNull(document.getElementById("volcano"));
   static #overlay = assertNotNull(document.getElementById("overlay"));
+  static #tick = () => {};
+  static #last = 0;
   static #id = 0;
+  /** @type {(() => void)[]} */ static #onToggle = [];
+
+  static get running() { return this.#id > 0; }
+
+  /** @param {() => void} listener */ static addToggleListener(listener) { this.#onToggle.push(listener); }
+
+  /** @param {() => void} listener */
+  static removeToggleListener(listener) { this.#onToggle.splice(this.#onToggle.indexOf(listener), 1); }
 
   static start() {
-    const start = Date.now();
-    const onFrame = () => {
-      const time = (Date.now() - start) / this.#DURATION;
-      const lost = time >= 1;
+    let time = 0;
+    this.#last = Date.now();
+    (this.#tick = () => {
+      const curr = Date.now();
+      time += curr - this.#last;
+
+      const lost = time >= this.#DURATION;
       if (lost) this.#onLoss();
-      this.#time.style.width = `${Math.ceil(time * 100)}%`;
-      this.#volcano.style.setProperty("--frame", Math.floor(time * this.#FRAMES).toString());
-      if (!lost) this.#id = requestAnimationFrame(onFrame);
-    };
-    onFrame();
+
+      this.#time.style.width = `${Math.ceil(time * 100 / this.#DURATION)}%`;
+      this.#volcano.style.setProperty("--frame", Math.floor(time * this.#FIRST_VOLCANO_FRAMES / this.#DURATION).toString());
+
+      if (!lost) {
+        this.#last = curr;
+        this.#id = requestAnimationFrame(this.#tick);
+      }
+    })();
+
+    FlyingObjectsManager.start();
+  }
+
+  static #pause() {
+    cancelAnimationFrame(this.#id);
+    this.#last = 0;
+  }
+
+  static toggleTime() {
+    if (this.running) {
+      this.#pause();
+      this.#id = 0;
+    } else {
+      this.#last = Date.now();
+      this.#tick();
+    }
+
+    for (const listener of this.#onToggle) listener();
   }
 
   static onWin() { this.#onEnd("Hai Vinto!!!") }
@@ -28,14 +67,15 @@ class GameManager {
       if (child instanceof HTMLImageElement) child.classList.add("unloaded");
     }
 
-    new Animator(this.#volcano, 13, 22, 35).toggle();
+    setTimeout(() => this.#id = 0, this.#LOSS_STOP_DELAY);
+    new Animator(this.#volcano, this.#ERUPTION_FPS, this.#FIRST_VOLCANO_FRAMES, this.#LAST_VOLCANO_FRAME).toggle();
     this.#onEnd("Hai perso...");
   }
 
   /** @param {string} text */
   static #onEnd(text) {
-    cancelAnimationFrame(this.#id);
-    this.#id = 0;
+    this.#pause();
+    this.#tick = () => {};
 
     for (const child of this.#volcano.children) {
       if (child instanceof HTMLButtonElement) child.classList.add("unloaded");
@@ -48,8 +88,8 @@ class GameManager {
       setTimeout(() => {
         Switcher.LEVEL.switch("main");
         this.#reset();
-      }, this.#LOSS_INTERVAL);
-    }, this.#LOSS_INTERVAL);
+      }, this.#END_INTERVAL);
+    }, this.#END_INTERVAL);
   }
 
   static #reset() {

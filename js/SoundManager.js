@@ -12,15 +12,16 @@ class SoundManager {
     destruction: {filename: "Distruzione Edificio.mp3", music: false}
   };
 
-  /** @type {Set<HTMLAudioElement>} */ static #playing = new Set();
+  /** @type {Set<HTMLAudioElement>} */ static #instantiated = new Set();
   /** @type {boolean} */ static #interacted = false;
+  static #playing = true;
 
   /** @type {number} */ static #volume;
   static get volume() { return this.#volume; }
   static set volume(volume) {
     this.#volume = Math.min(Math.max(volume, 0), this.#MAX_VOLUME);
     const scaledVolume = this.#volume / this.#MAX_VOLUME;
-    for (const audio of this.#playing) audio.volume = scaledVolume;
+    for (const audio of this.#instantiated) audio.volume = scaledVolume;
   }
 
   /** @param {Sound} sound */
@@ -32,18 +33,18 @@ class SoundManager {
       });
     }
 
-    this.#playing.add(audio);
+    this.#instantiated.add(audio);
   }
 
   static stop() {
     if (this.#interacted) {
-      for (const audio of this.#playing) {
+      for (const audio of this.#instantiated) {
         audio.pause();
         audio.src = audio.src;
       }
     }
 
-    this.#playing.clear();
+    this.#instantiated.clear();
   }
 
   /** @param {Sound} sound */
@@ -52,7 +53,13 @@ class SoundManager {
     const audio = new Audio(`sounds/${info.filename}`);
     audio.volume = this.#volume / this.#MAX_VOLUME;
     audio.loop = info.music;
-    audio.addEventListener("pause", () => audio.currentTime == audio.duration ? this.#playing.delete(audio) : audio.play());
+    audio.addEventListener("play", () => {
+      if (!this.#playing) audio.pause();
+    });
+    audio.addEventListener("pause", () => {
+      if (audio.currentTime == audio.duration) this.#instantiated.delete(audio);
+      else if (this.#playing) audio.play();
+    });
     return audio;
   }
 
@@ -64,11 +71,19 @@ class SoundManager {
       if (e instanceof KeyboardEvent && (e.key.length != 1 && e.key != "Tab")) return;
       removeEventListener("click", onInteraction);
       removeEventListener("keydown", onInteraction);
-      for (const audio of this.#playing) audio.play();
+      for (const audio of this.#instantiated) audio.play();
       this.#interacted = true;
     };
 
     addEventListener("click", onInteraction);
     addEventListener("keydown", onInteraction);
+
+    GameManager.addToggleListener(() => {
+      this.#playing = GameManager.running;
+      for (const sound of this.#instantiated) {
+        if (this.#playing) sound.play();
+        else if (sound.loop) sound.pause();
+      }
+    });
   }
 }

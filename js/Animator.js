@@ -29,7 +29,9 @@ class Animator {
     this.#toggled = !this.#toggled;
     let last = Date.now();
     const onFrame = () => {
-      this.#t = Math.min(Math.max(this.#t + (Date.now() - last) * (this.#toggled ? 1 : -1), 0), this.#duration);
+      const curr = Date.now();
+
+      this.#t = Math.min(Math.max(this.#t + (curr - last) * (this.#toggled ? 1 : -1), 0), this.#duration);
       this.#element.style.setProperty("--frame", ((
         this.#toggled
         ? Math.floor(this.#t / this.#mspf) + 1
@@ -37,7 +39,7 @@ class Animator {
       ) + this.#firstFrame).toString());
 
       if (this.#toggled ? this.#t < this.#duration : this.#t > 0) {
-        last = Date.now();
+        last = curr;
         this.#id = requestAnimationFrame(onFrame);
       } else this.#id = 0;
     };

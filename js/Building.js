@@ -30,6 +30,8 @@ class Building {
   get level() { return this.#level; }
 
   #update() {
+    if (!GameManager.running) return;
+
     const income = this.#type.onUpdate(this.#level);
     if (income == 0) return;
 

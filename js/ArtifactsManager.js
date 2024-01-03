@@ -53,12 +53,19 @@ class ArtifactsManager {
       artifact.classList.add("artifact", "unloaded");
       setX(artifact, i);
       artifact.style.bottom = `${216 - Math.floor(i / this.#COLUMNS) * 160}px`;
+
       artifact.addEventListener("click", () => {
         dialogImg.src = artifact.src;
         dialogImg.alt = info.id;
         assertNotNull(this.#dialog.lastElementChild).textContent =
           `${info.name}\nAnno di ritrovamento: ${info.foundYear}\n${info.description}`;
-        setTimeout(() => this.#dialog.show());
+
+        setTimeout(() => {
+          if (this.#dialog.open) return;
+
+          this.#dialog.show();
+          GameManager.toggleTime();
+        });
       });
 
       this.#artifacts.push({unknown, artifact});
@@ -66,6 +73,11 @@ class ArtifactsManager {
       this.#dialog.before(artifact);
     });
 
-    assertNotNull(document.getElementById("museum")).addEventListener("click", () => this.#dialog.close());
+    assertNotNull(document.getElementById("museum")).addEventListener("click", () => {
+      if (!this.#dialog.open) return;
+
+      this.#dialog.close();
+      GameManager.toggleTime();
+    });
   }
 }
