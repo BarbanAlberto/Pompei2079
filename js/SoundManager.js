@@ -54,7 +54,7 @@ class SoundManager {
     audio.volume = this.#volume / this.#MAX_VOLUME;
     audio.loop = info.music;
     audio.addEventListener("play", () => {
-      if (!this.#playing) audio.pause();
+      if (!this.#playing && audio.currentTime > 0) audio.pause();
     });
     audio.addEventListener("pause", () => {
       if (audio.currentTime == audio.duration) this.#instantiated.delete(audio);
@@ -78,8 +78,8 @@ class SoundManager {
     addEventListener("click", onInteraction);
     addEventListener("keydown", onInteraction);
 
-    GameManager.addToggleListener(() => {
-      this.#playing = GameManager.running;
+    GameManager.addToggleListener(paused => {
+      this.#playing = !paused;
       for (const sound of this.#instantiated) {
         if (this.#playing) sound.play();
         else if (sound.loop) sound.pause();

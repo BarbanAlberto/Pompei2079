@@ -1,5 +1,6 @@
 class FlyingObjectsManager {
   static #parent = assertNotNull(document.getElementById("flying-objects"));
+  /** @type {[number, number]} */ static #ids = [0, 0];
 
   static start() {
     for (let i = 0; i < 5; i++) this.#spawn(true, false);
@@ -14,7 +15,7 @@ class FlyingObjectsManager {
    * @param {boolean} isBird
    */
   static #spawnLoop(minInterval, maxInterval, isBird) {
-    setTimeout(() => {
+    this.#ids[+isBird] = setTimeout(() => {
       this.#spawn(isBird, true);
       this.#spawnLoop(minInterval, maxInterval, isBird);
     }, Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval);
@@ -60,5 +61,11 @@ class FlyingObjectsManager {
     }, {once: true});
   }
 
-  static { GameManager.addToggleListener(() => this.#parent.classList.toggle("paused", !GameManager.running)); }
+  static reset() {
+    for (const id of this.#ids) clearTimeout(id);
+    this.#ids = [0, 0];
+    for (const img of this.#parent.children) assertNotUndefined(img.getAnimations()[0]).finish();
+  }
+
+  static { GameManager.addToggleListener(paused => this.#parent.classList.toggle("paused", paused)); }
 }

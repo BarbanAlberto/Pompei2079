@@ -11,14 +11,19 @@ class GameManager {
   static #tick = () => {};
   static #last = 0;
   static #id = 0;
-  /** @type {(() => void)[]} */ static #onToggle = [];
+  /** @type {((paused: boolean) => void)[]} */ static #onToggle = [];
 
   static get running() { return this.#id > 0; }
 
-  /** @param {() => void} listener */ static addToggleListener(listener) { this.#onToggle.push(listener); }
+  /** @param {(paused: boolean) => void} listener */ static addToggleListener(listener) { this.#onToggle.push(listener); }
 
-  /** @param {() => void} listener */
+  /** @param {(paused: boolean) => void} listener */
   static removeToggleListener(listener) { this.#onToggle.splice(this.#onToggle.indexOf(listener), 1); }
+
+  /** @param {boolean} paused */
+  static #dispatchToggle(paused) {
+    for (const listener of this.#onToggle) listener(paused);
+  }
 
   static start() {
     let time = 0;
@@ -56,7 +61,7 @@ class GameManager {
       this.#tick();
     }
 
-    for (const listener of this.#onToggle) listener();
+    this.#dispatchToggle(!this.running);
   }
 
   static onWin() { this.#onEnd("Hai Vinto!!!") }
@@ -94,6 +99,9 @@ class GameManager {
 
   static #reset() {
     for (const child of this.#volcano.children) child.classList.toggle("unloaded");
+    FlyingObjectsManager.reset();
+    this.#id = 0;
+    this.#dispatchToggle(false);
     BuildingsManager.reset();
     ResourceManager.reset();
     CapManager.reset();

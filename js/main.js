@@ -18,7 +18,7 @@
   }
 
   const playPauseAnimator = new Animator(assertInstanceOf(playPause.firstElementChild, HTMLElement), 24, 0, 6);
-  GameManager.addToggleListener(() => playPauseAnimator.toggle());
+  GameManager.addToggleListener(paused => playPauseAnimator.toggle(paused));
   playPause.addEventListener("click", () => GameManager.toggleTime());
 
   bindClick("show-volcano", () => Switcher.GAME.switch("volcano"));

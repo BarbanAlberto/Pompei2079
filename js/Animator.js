@@ -23,7 +23,10 @@ class Animator {
 
   get toggled() { return this.#toggled; }
 
-  toggle() {
+  /** @param {boolean} toggled */
+  toggle(toggled = !this.#toggled) {
+    if (toggled == this.#toggled) return;
+
     cancelAnimationFrame(this.#id);
 
     this.#toggled = !this.#toggled;
